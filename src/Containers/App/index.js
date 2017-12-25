@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Sidebar from '../../Components/Sidebar'
-import Routes from '../../routes'
-import { withRouter } from 'react-router-dom'
+import { withRouter }       from 'react-router-dom';
+import Sidebar              from '../../Components/Sidebar';
+import Routes               from '../../routes';
 
 class App extends Component {
   render() {
@@ -15,6 +15,3 @@ class App extends Component {
 }
 
 export default withRouter(App)
-
-//<Sidebar />
-//<Routes />
