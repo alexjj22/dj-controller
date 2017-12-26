@@ -1,9 +1,9 @@
 /**
  * Created by Александр on 24.12.2017.
  */
-import React, { Component } from 'react';
-import DjController         from './Containers/DjController/index';
-import Uploader             from './Containers/Uploader/index';
+import React        from 'react';
+import DjController from './Containers/DjController/index';
+import Uploader     from './Containers/Uploader/index';
 
 import {
     Redirect,

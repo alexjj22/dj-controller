@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { withRouter }       from 'react-router-dom';
-import Sidebar              from '../../Components/Sidebar';
+import Sidebar              from '../Sidebar/index';
 import Routes               from '../../routes';
 
-class App extends Component {
+const style = {
+    display: 'flex',
+    minHeight: '100vh',
+    flexWrap: 'wrap'
+};
+
+export default class App extends Component {
   render() {
     return (
-      <div className="app">
+      <div className="app" style={ style }>
         <Sidebar />
         <Routes />
       </div>
     );
   }
 }
-
-export default withRouter(App)

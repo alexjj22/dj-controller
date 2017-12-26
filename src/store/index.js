@@ -7,13 +7,16 @@ import {
     applyMiddleware,
     combineReducers
 } from 'redux';
+import logger from 'redux-logger'
 
-import uploader from '../Containers/Uploader/reducer'
+import uploader         from '../Containers/Uploader/reducer'
+import mainDjController from '../Containers/MainDjController/reducer'
 
 let reducer = combineReducers({
-    uploader
+    uploader,
+    mainDjController
 });
 
-const store = createStore( reducer );
+const store = createStore( reducer, applyMiddleware(logger) );
 
 export default store
