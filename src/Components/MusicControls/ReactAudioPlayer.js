@@ -6,24 +6,24 @@ import PropTypes            from 'prop-types';
 
 class ReactAudioPlayer extends Component {
 
-
     componentDidUpdate(prevProps ){
-        const { volume, isPlaying } = this.props;
+        const { volume, isPlaying, currentTime } = this.props;
         const audio = this.audioEl;
-
 
         if( prevProps.volume !== volume ) {
             audio.volume = volume;
         }
 
-        if( prevProps.isPlaying !== isPlaying ) {
-            console.log( isPlaying );
-            //isPlaying ? audio.pause() : audio.play();
+        if( prevProps.isPlaying !== isPlaying) {
+            //console.log( 'isPlaying' , isPlaying );
+            isPlaying ? this.audioEl.play() : this.audioEl.pause();
         }
+
+        console.log('audio isPlaying didUpdate', isPlaying);
     }
 
     componentDidMount() {
-        const { volume, isPlaying } = this.props;
+        const { volume, isPlaying, currentTime } = this.props;
         const audio = this.audioEl;
 
         //settings
@@ -37,6 +37,8 @@ class ReactAudioPlayer extends Component {
         // When enough of the file has downloaded to start playing
         audio.addEventListener('canplay', (e) => {
             this.props.onCanPlay(e);
+
+            isPlaying && audio.play();
         });
 
         // When enough of the file has downloaded to play the entire file

@@ -1,18 +1,11 @@
 /**
  * Created by Александр on 26.12.2017.
  */
-
-import React, { Component } from 'react';
-
-const style = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-};
+import React from 'react';
 
 const Volume = ({ volume, onChange }) => {
     return (
-        <div className="volume" style={ style }>
+        <div className="volume" >
             <i className="fa fa-volume-up" aria-hidden="true"/>
             <input
                 type="range"

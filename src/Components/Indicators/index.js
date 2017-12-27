@@ -1,7 +1,7 @@
 /**
  * Created by Александр on 25.12.2017.
  */
-import React, { Component } from 'react';
+import React from 'react';
 
 
 const Idicators = ({ indicators, checked, onChange }) => {

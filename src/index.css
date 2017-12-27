@@ -107,3 +107,9 @@ body {
     pointer-events: none;
     cursor: default;
 }
+
+.volume {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

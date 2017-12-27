@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import Dropzone             from 'react-dropzone';
-import { withRouter }       from 'react-router';
 import { connect }          from 'react-redux';
 import { linkActions }      from '../../helpers/redux';
 import Idicators            from '../../Components/Indicators/index'
@@ -14,7 +13,6 @@ import {
     removeSongFromPlaylistOne,
     removeSongFromPlaylistTwo
 } from './actions';
-
 
 const drugAndDropStyle = {
     width: '300px',
@@ -27,7 +25,7 @@ const drugAndDropStyle = {
     textAlign: 'center'
 };
 
-//@withRouter
+
 @connect(
     ({ uploader }) => uploader,
     linkActions( setPlaylistIndicator, addToPlaylist, removeSongFromPlaylistOne, removeSongFromPlaylistTwo )

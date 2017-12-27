@@ -4,18 +4,23 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
 import { linkActions }      from '../../../helpers/redux';
-import Volume               from '../../../Components/MusicController/Volume';
-import PlayPause            from '../../../Components/MusicController/PlayPause';
+import Volume               from '../../../Components/MusicControls/Volume';
+import PlayPause            from '../../../Components/MusicControls/PlayPause';
 import {
     setCommonPlayPause,
     setCommonVolume
 } from '../actionCreators'
 
 @connect(
-    ({ mainDjController }) => mainDjController,
+    ({ mainDjController, uploader }) => ({ ...mainDjController, ...uploader }),
     linkActions( setCommonPlayPause, setCommonVolume)
 )
 export default class MainDjController extends Component {
+
+    handlePlayPause = () => {
+
+    }
+
     componentWillUnmount(){
         const {
             isPlaying,

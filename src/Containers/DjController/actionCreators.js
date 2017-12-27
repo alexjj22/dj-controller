@@ -59,12 +59,13 @@ export const setLocalCurrentTime = ( currentTime, id ) => {
     }
 };
 
-export const setLocalSrc = ( src, id ) => {
+export const setLocalSrc = ( src, id, isPlaying ) => {
     return {
         type: SET_LOCAL_SRC,
         payload: {
             src,
-            id
+            id,
+            isPlaying
         }
     }
 };

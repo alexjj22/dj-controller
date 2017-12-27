@@ -1,7 +1,7 @@
 /**
  * Created by Александр on 27.12.2017.
  */
-import React, { Component } from 'react';
+import React from 'react';
 
 const Prev = ({ clickHandler, fontSize }) => {
     return (

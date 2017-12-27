@@ -14,7 +14,7 @@ import {
 const initialState = {
     isPlayingCommon: false,
     commonVolume: 1,
-    playlistOne: {
+    playlistOneSettings: {
         isPlaying: false,
         volume: 1,
         speed: 1,
@@ -22,7 +22,7 @@ const initialState = {
         duration: 0,
         src: ''
     },
-    playlistTwo: {
+    playlistTwoSettings: {
         isPlaying: false,
         volume: 1,
         speed: 1,
@@ -33,7 +33,7 @@ const initialState = {
 };
 
 export default function mainDjController(state = initialState, { type, payload } = {}) {
-    const { playlistOne, playlistTwo } = state;
+    const { playlistOneSettings, playlistTwoSettings } = state;
 
     switch (type) {
 
@@ -49,7 +49,7 @@ export default function mainDjController(state = initialState, { type, payload }
         case SET_LOCAL_SRC:
             return {
                 ...state,
-                ...{ [payload.id]: {...state[payload.id], src: payload.src }}
+                ...{ [payload.id]: {...state[payload.id], src: payload.src, currentTime: 0, duration: 0, isPlaying: payload.isPlaying }}
             };
 
         case SET_LOCAL_DURATION:
@@ -63,7 +63,7 @@ export default function mainDjController(state = initialState, { type, payload }
                 ...state,
                 ...{ [payload.id]: {...state[payload.id], isPlaying: payload.isPlaying }}
             };
-            updatedState.isPlayingCommon = updatedState.playlistOne.isPlaying && updatedState.playlistTwo.isPlaying;
+            updatedState.isPlayingCommon = updatedState.playlistOneSettings.isPlaying && updatedState.playlistTwoSettings.isPlaying;
             return updatedState;
 
         case SET_LOCAL_CURRENT_TIME:
@@ -76,8 +76,8 @@ export default function mainDjController(state = initialState, { type, payload }
             return {
                 ...state,
                 ...payload,
-                ...playlistOne.isPlaying = payload.isPlayingCommon,
-                ...playlistTwo.isPlaying = payload.isPlayingCommon
+                ...playlistOneSettings.isPlaying = payload.isPlayingCommon,
+                ...playlistTwoSettings.isPlaying = payload.isPlayingCommon
             };
 
         default:
