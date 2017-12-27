@@ -7,9 +7,29 @@ import PropTypes            from 'prop-types';
 class ReactAudioPlayer extends Component {
 
 
-    componentDidMount() {
+    componentDidUpdate(prevProps ){
+        const { volume, isPlaying } = this.props;
         const audio = this.audioEl;
 
+
+        if( prevProps.volume !== volume ) {
+            audio.volume = volume;
+        }
+
+        if( prevProps.isPlaying !== isPlaying ) {
+            console.log( isPlaying );
+            //isPlaying ? audio.pause() : audio.play();
+        }
+    }
+
+    componentDidMount() {
+        const { volume, isPlaying } = this.props;
+        const audio = this.audioEl;
+
+        //settings
+        audio.volume = volume;
+
+        // listeners
         audio.addEventListener('error', (e) => {
             this.props.onError(e);
         });
@@ -110,6 +130,7 @@ class ReactAudioPlayer extends Component {
                 src={this.props.src}
                 style={this.props.style}
                 title={title}
+                //volume={ this.props.volume }
                 {...conditionalProps}
             >
                 {incompatibilityMessage}
@@ -119,11 +140,13 @@ class ReactAudioPlayer extends Component {
 }
 
 ReactAudioPlayer.defaultProps = {
+    volume: 1,
     autoPlay: false,
     children: null,
     className: '',
     controls: false,
     controlsList: '',
+    isPlaying: false,
     listenInterval: 10000,
     loop: false,
     muted: false,
@@ -149,6 +172,7 @@ ReactAudioPlayer.propTypes = {
     className: PropTypes.string,
     controls: PropTypes.bool,
     controlsList: PropTypes.string,
+    isPlaying: PropTypes.bool,
     listenInterval: PropTypes.number,
     loop: PropTypes.bool,
     muted: PropTypes.bool,
@@ -166,6 +190,7 @@ ReactAudioPlayer.propTypes = {
     src: PropTypes.string, // Not required b/c can use <source>
     style: PropTypes.objectOf(PropTypes.string),
     title: PropTypes.string,
+    volume: PropTypes.number,
 };
 
 export default ReactAudioPlayer;

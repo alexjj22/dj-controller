@@ -10,16 +10,16 @@ const style = {
     justifyContent: 'center'
 };
 
-const Volume = ({ value, onChange, maxVolume }) => {
+const Volume = ({ volume, onChange }) => {
     return (
         <div className="volume" style={ style }>
             <i className="fa fa-volume-up" aria-hidden="true"/>
             <input
                 type="range"
-                value={ value }
+                value={ volume }
                 step="0.01"
-                onChange={ e => onChange(e.target.value) }
-                min="0" max={ maxVolume ? maxVolume : 1 } />
+                onChange={ e => onChange( Number(e.target.value) ) }
+                min="0" max={ 1 } />
         </div>
     )
 }

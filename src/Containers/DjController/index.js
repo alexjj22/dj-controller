@@ -8,13 +8,16 @@ import { connect }          from 'react-redux';
 import { linkActions }      from '../../helpers/redux';
 import {
     setLocalPlayPause,
-    setLocalVolume
+    setLocalVolume,
+    setLocalCurrentTime,
+    setLocalSrc,
+    setLocalDuration
 } from './actionCreators';
 
 
 @connect(
     ({ uploader, mainDjController }) => ({ ...uploader, ...mainDjController}),
-    linkActions( setLocalPlayPause, setLocalVolume )
+    linkActions( setLocalPlayPause, setLocalVolume, setLocalCurrentTime, setLocalSrc, setLocalDuration )
 )
 export default class DjController extends Component {
     render(){
@@ -23,8 +26,12 @@ export default class DjController extends Component {
             playlist_two,
             playlistOne,
             playlistTwo,
+            commonVolume,
             setLocalPlayPause,
-            setLocalVolume
+            setLocalVolume,
+            setLocalCurrentTime,
+            setLocalSrc,
+            setLocalDuration
             } = this.props;
 
         return (
@@ -36,14 +43,24 @@ export default class DjController extends Component {
                         <MusicController
                             setLocalPlayPause={ setLocalPlayPause }
                             setLocalVolume={ setLocalVolume }
-                            playlist={ playlist_one } id="playlistOne"
+                            commonVolume={ commonVolume }
+                            playlist={ playlist_one }
+                            setLocalCurrentTime={ setLocalCurrentTime }
+                            setLocalSrc={ setLocalSrc }
+                            setLocalDuration={ setLocalDuration }
+                            id="playlistOne"
                             {...playlistOne} />
                     }
                     { playlist_two.length > 0 &&
                         <MusicController
                             setLocalPlayPause={ setLocalPlayPause }
                             setLocalVolume={ setLocalVolume }
-                            playlist={ playlist_two } id="playlistTwo"
+                            commonVolume={ commonVolume }
+                            playlist={ playlist_two }
+                            setLocalCurrentTime={ setLocalCurrentTime }
+                            setLocalSrc={ setLocalSrc }
+                            setLocalDuration={ setLocalDuration }
+                            id="playlistTwo"
                             { ...playlistTwo }/>
                     }
                 </div>

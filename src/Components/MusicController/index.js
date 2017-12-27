@@ -21,17 +21,6 @@ export default class MusicController extends Component {
         src: '',
     }
 
-    volumeUpdate = volume => {
-        this.setState({
-            volume
-        })
-    }
-
-    timeUpdate = time => {
-        this.setState({
-            currentTime: Math.round(time)
-        });
-    }
 
     setCurrentTime = time => {
         this.setState({
@@ -77,7 +66,18 @@ export default class MusicController extends Component {
     }
 
     componentDidMount(){
-        //this.audio.audioEl.volume = this.state.volume;
+        const {
+            id,
+            playlist,
+            isPlaying,
+            volume,
+            currentTime,
+            commonVolume,
+            setLocalPlayPause,
+            setLocalVolume,
+            setLocalCurrentTime,
+            src
+            } = this.props;
     }
 
     componentDidUpdate(prevState){
@@ -87,40 +87,46 @@ export default class MusicController extends Component {
     }
 
     canPlay = () => {
-        this.setState({
-            isPlaying: true,
-            duration: this.audio.audioEl.duration
-        }, this.audioControl() );
+        const { setLocalDuration } = this.props;
+        //this.setState({
+        //    isPlaying: true,
+        //    duration: this.audio.audioEl.duration
+        //}, this.audioControl() );
+        this.audio.audioEl.play();
     }
 
     render(){
-        const {
-            currentTime,
-            duration,
-            src,
-
-        } = this.state;
-
         const {
             id,
             playlist,
             isPlaying,
             volume,
+            currentTime,
             commonVolume,
             setLocalPlayPause,
-            setLocalVolume
+            setLocalVolume,
+            setLocalCurrentTime,
+            setLocalDuration,
+            setLocalSrc,
+            src,
+            duration
         } = this.props;
-        //console.log( this.props );
+
+        const volumeForPlayer = volume * commonVolume;
+        const srcForPlayer = src ? src : playlist[0].preview;
 
         return (
             <div className="controller-dashboard">
                 <div className="song-dashboard">
                     <ReactAudioPlayer
-                        src={ src }
+                        autoPlay={ false }
+                        src={ srcForPlayer }
                         listenInterval={ 1000 }
-                        onListen={ this.timeUpdate }
+                        onListen={ time => setLocalCurrentTime( Math.round(time), id) }
                         ref={ element => { this.audio = element }}
                         onCanPlay={ this.canPlay }
+                        volume={ volumeForPlayer }
+                        isPlaying={ isPlaying }
                     />
 
                     <Prev
@@ -139,10 +145,10 @@ export default class MusicController extends Component {
                         fontSize={ 18 }
                     />
 
+
                     <Volume
                         volume={ volume }
-                        onChange={ setLocalVolume }
-                        maxVolume={ commonVolume }
+                        onChange={ volume => setLocalVolume(volume, id) }
                     />
 
                     <Timer
