@@ -1,10 +1,103 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }
 
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-dj-controller {
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+}
+
+.main-dj-controller .fa {
+    margin-right: 10px;
+}
+
+.controllers-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.controllers-wrap .controller-dashboard {
+    padding: 0 10px;
+    width: 430px;
+}
+
+.indicators {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar {
+    border-right: 2px solid black;
+    margin: 0 15px;
+    padding-right: 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a{
+    text-transform: uppercase;
+    color: black;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.indicators {
+    list-style-type: none;
+    padding: 0;
+}
+
+.music-list li .fa{
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.song-dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.song-dashboard .fa {
+    margin: 5px;
+}
+
+.song-dashboard .timer {
+    margin: 0 10px;
+}
+
+.progress-wrap input {
+    width: 100%;
+}
+
+.audio-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.audio-list li.active {
+    background-color: black;
+    color: white;
+}

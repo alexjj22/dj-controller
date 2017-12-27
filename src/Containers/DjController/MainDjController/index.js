@@ -3,40 +3,46 @@
  */
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
-import { linkActions }      from '../../helpers/redux';
-import PlayPause            from '../../Components/MusicController/PlayPause';
-import Volume               from '../../Components/MusicController/Volume';
+import { linkActions }      from '../../../helpers/redux';
+import Volume               from '../../../Components/MusicController/Volume';
+import PlayPause            from '../../../Components/MusicController/PlayPause';
 import {
     setCommonPlayPause,
     setCommonVolume
-} from './actionCreators'
-
-import './style.css';
+} from '../actionCreators'
 
 @connect(
     ({ mainDjController }) => mainDjController,
     linkActions( setCommonPlayPause, setCommonVolume)
 )
 export default class MainDjController extends Component {
-    render(){
+    componentWillUnmount(){
         const {
             isPlaying,
-            volume,
+            setCommonPlayPause,
+            } = this.props;
+
+        isPlaying && setCommonPlayPause(!isPlaying);
+    }
+
+    render(){
+        const {
+            isPlayingCommon,
+            commonVolume,
             setCommonPlayPause,
             setCommonVolume
         } = this.props;
 
-        console.log(volume, isPlaying);
 
         return (
             <div className="main-dj-controller">
                 <PlayPause
-                    clickHandler={ () => setCommonPlayPause(!isPlaying) }
+                    clickHandler={ () => setCommonPlayPause(!isPlayingCommon) }
                     fontSize={ 48 }
-                    isPlaying={ isPlaying } />
+                    isPlaying={ isPlayingCommon } />
 
                 <Volume
-                    volume={ volume }
+                    volume={ commonVolume }
                     onChange={ setCommonVolume }
                 />
             </div>

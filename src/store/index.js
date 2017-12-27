@@ -1,16 +1,15 @@
 /**
  * Created by Александр on 24.12.2017.
  */
-
 import {
     createStore,
     applyMiddleware,
     combineReducers
 } from 'redux';
-import logger from 'redux-logger'
+import logger               from 'redux-logger';
+import uploader             from '../Containers/Uploader/reducer';
+import mainDjController     from '../Containers/DjController/reducer';
 
-import uploader         from '../Containers/Uploader/reducer'
-import mainDjController from '../Containers/MainDjController/reducer'
 
 let reducer = combineReducers({
     uploader,

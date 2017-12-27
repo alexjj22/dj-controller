@@ -10,7 +10,7 @@ const Timer = ({ current, duration }) => {
 
     return (
         <div className="timer">
-            {`${now} from ${common}`}
+            {`${now} / ${common}`}
         </div>
     )
 }

@@ -3,16 +3,12 @@
  */
 import React, { Component } from 'react';
 
-const style = {
-    listStyleType: 'none',
-    padding: 0
-};
 
 const Idicators = ({ indicators, checked, onChange }) => {
     const text = 'Add to playlist ';
 
     return (
-        <ul className="indicators" style={ style }>
+        <ul className="indicators">
             {
                 indicators.map( (item, i) => {
                     return (

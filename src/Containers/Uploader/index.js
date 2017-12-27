@@ -14,7 +14,6 @@ import {
     removeSongFromPlaylistOne,
     removeSongFromPlaylistTwo
 } from './actions';
-import './styles.css';
 
 
 const drugAndDropStyle = {

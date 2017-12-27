@@ -2,8 +2,11 @@
  * Created by Александр on 25.12.2017.
  */
 import React, { Component } from 'react';
-import ReactAudioPlayer     from 'react-audio-player';
+//import ReactAudioPlayer     from 'react-audio-player';
+import ReactAudioPlayer     from './ReactAudioPlayer';
 import PlayPause            from './PlayPause';
+import Prev                 from './Prev';
+import Next                 from './Next';
 import Timer                from './Timer';
 import TrackProgress        from './TrackProgress';
 import Volume               from './Volume';
@@ -16,7 +19,6 @@ export default class MusicController extends Component {
         currentTime: 0,
         duration: 0,
         src: '',
-        volume: 1
     }
 
     volumeUpdate = volume => {
@@ -39,8 +41,6 @@ export default class MusicController extends Component {
             setTimeout( () => this.audio.audioEl.play(), 50);
         });
     }
-
-
 
     playPause = () => {
         const { src } = this.state;
@@ -77,13 +77,13 @@ export default class MusicController extends Component {
     }
 
     componentDidMount(){
-        this.audio.audioEl.volume = this.state.volume;
+        //this.audio.audioEl.volume = this.state.volume;
     }
 
     componentDidUpdate(prevState){
-        if( prevState.volume !== this.state.volume ) {
-            this.audio.audioEl.volume = this.state.volume;
-        }
+        //if( prevState.volume !== this.state.volume ) {
+            //this.audio.audioEl.volume = this.state.volume;
+        //}
     }
 
     canPlay = () => {
@@ -97,43 +97,67 @@ export default class MusicController extends Component {
         const {
             currentTime,
             duration,
-            isPlaying,
             src,
-            volume
+
         } = this.state;
 
-        const { playlist } = this.props;
+        const {
+            id,
+            playlist,
+            isPlaying,
+            volume,
+            commonVolume,
+            setLocalPlayPause,
+            setLocalVolume
+        } = this.props;
+        //console.log( this.props );
 
         return (
             <div className="controller-dashboard">
-                <PlayPause
-                    clickHandler={ this.playPause }
-                    fontSize={ 32 }
-                    isPlaying={ isPlaying } />
+                <div className="song-dashboard">
+                    <ReactAudioPlayer
+                        src={ src }
+                        listenInterval={ 1000 }
+                        onListen={ this.timeUpdate }
+                        ref={ element => { this.audio = element }}
+                        onCanPlay={ this.canPlay }
+                    />
 
-                <Timer
-                    current={ currentTime }
-                    duration={ duration }
-                />
+                    <Prev
+                        clickHandler={ () => {} }
+                        fontSize={ 18 }
+                    />
 
-                <Volume
-                    volume={ volume }
-                    onChange={ this.volumeUpdate }
-                />
+                    <PlayPause
+                        id={ id }
+                        clickHandler={ setLocalPlayPause.bind(null, !isPlaying, id) }
+                        fontSize={ 32 }
+                        isPlaying={ isPlaying } />
 
-                <TrackProgress
-                    current={ currentTime }
-                    duration={ duration }
-                    onChange={ this.setCurrentTime }
-                />
+                    <Next
+                        clickHandler={ () => {} }
+                        fontSize={ 18 }
+                    />
 
-                <ReactAudioPlayer
-                    src={ src }
-                    listenInterval={ 1000 }
-                    onListen={ this.timeUpdate }
-                    ref={ element => { this.audio = element }}
-                    onCanPlay={ this.canPlay }
-                />
+                    <Volume
+                        volume={ volume }
+                        onChange={ setLocalVolume }
+                        maxVolume={ commonVolume }
+                    />
+
+                    <Timer
+                        current={ currentTime }
+                        duration={ duration }
+                    />
+                </div>
+
+                <div className="progress-wrap">
+                    <TrackProgress
+                        current={ currentTime }
+                        duration={ duration }
+                        onChange={ this.setCurrentTime }
+                    />
+                </div>
 
                 <ul className="audio-list">
                     {
