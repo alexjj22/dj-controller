@@ -2,9 +2,13 @@
  * Created by Александр on 24.12.2017.
  */
 import React, { PureComponent } from 'react';
-import { Link }                 from 'react-router-dom';
+import { NavLink }              from 'react-router-dom';
 import { connect }              from 'react-redux';
 import { withRouter }           from 'react-router';
+import {
+    uploadPath,
+    djControllerPath
+} from '../../constants'
 
 @withRouter
 @connect( ({ uploader }) => uploader )
@@ -13,19 +17,19 @@ export default class Sidebar extends PureComponent {
         const {
             playlist_one,
             playlist_two,
-            location : {
-                pathname
-            }
         } = this.props;
 
-        const uploadPath = '/upload';
-        const djControllerPath = playlist_one.length > 0 || playlist_two.length > 0 ? '/dj-controller' : '/upload';
+        const djControllerClassName = playlist_one.length > 0 || playlist_two.length > 0 ? '' : 'forbid-link-action';
 
         return (
             <nav className="sidebar">
                 <ul>
-                    <li><Link to={ uploadPath } >Upload</Link></li>
-                    <li><Link to={ djControllerPath } >Dj-controller</Link></li>
+                    <li>
+                        <NavLink activeStyle={{ fontWeight: 'bold' }} to={ uploadPath } >Upload</NavLink>
+                    </li>
+                    <li className={ djControllerClassName }>
+                        <NavLink activeStyle={{ fontWeight: 'bold' }} to={ djControllerPath } >Dj-controller</NavLink>
+                    </li>
                 </ul>
             </nav>
         )

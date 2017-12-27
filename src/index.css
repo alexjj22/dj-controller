@@ -58,6 +58,7 @@ body {
     text-transform: uppercase;
     color: black;
     text-decoration: none;
+    display: inline-block;
 }
 
 .sidebar ul li a:hover {
@@ -100,4 +101,9 @@ body {
 .audio-list li.active {
     background-color: black;
     color: white;
+}
+
+.forbid-link-action a{
+    pointer-events: none;
+    cursor: default;
 }
