@@ -31,7 +31,7 @@ body {
 
 .controllers-wrap .controller-dashboard {
     padding: 0 10px;
-    width: 430px;
+    width: 550px;
 }
 
 .indicators {
@@ -43,6 +43,7 @@ body {
     border-right: 2px solid black;
     margin: 0 15px;
     padding-right: 15px;
+    min-width: 200px;
 }
 
 .sidebar ul {
@@ -98,9 +99,14 @@ body {
     padding: 0;
 }
 
+.audio-list li {
+    cursor: pointer;
+}
+
 .audio-list li.active {
     background-color: black;
     color: white;
+    cursor: default;
 }
 
 .forbid-link-action a{
@@ -108,8 +114,14 @@ body {
     cursor: default;
 }
 
+.speed,
 .volume {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.speed input[type="range"],
+.volume input[type="range"] {
+    width: 100px;
 }

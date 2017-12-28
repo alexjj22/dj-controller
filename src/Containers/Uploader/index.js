@@ -12,7 +12,7 @@ import {
     addToPlaylist,
     removeSongFromPlaylistOne,
     removeSongFromPlaylistTwo
-} from './actions';
+} from './actionCreators';
 
 const drugAndDropStyle = {
     width: '300px',

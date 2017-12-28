@@ -9,10 +9,6 @@ import { connect }          from 'react-redux';
 import { linkActions }      from '../../helpers/redux';
 import {
     setLocalPlayPause,
-    setLocalVolume,
-    setLocalCurrentTime,
-    setLocalSrc,
-    setLocalDuration
 } from './actionCreators';
 import {
     uploadPath

@@ -16,18 +16,8 @@ import {
     linkActions( setCommonPlayPause, setCommonVolume)
 )
 export default class MainDjController extends Component {
-
-    handlePlayPause = () => {
-
-    }
-
     componentWillUnmount(){
-        const {
-            isPlaying,
-            setCommonPlayPause,
-            } = this.props;
-
-        isPlaying && setCommonPlayPause(!isPlaying);
+        this.props.setCommonPlayPause(false);
     }
 
     render(){
@@ -37,7 +27,6 @@ export default class MainDjController extends Component {
             setCommonPlayPause,
             setCommonVolume
         } = this.props;
-
 
         return (
             <div className="main-dj-controller">

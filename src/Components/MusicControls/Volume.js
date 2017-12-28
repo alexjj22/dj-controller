@@ -12,7 +12,7 @@ const Volume = ({ volume, onChange }) => {
                 value={ volume }
                 step="0.01"
                 onChange={ e => onChange( Number(e.target.value) ) }
-                min="0" max={ 1 } />
+                min="0" max="1" />
         </div>
     )
 }

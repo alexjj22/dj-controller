@@ -2,67 +2,56 @@
  * Created by Александр on 25.12.2017.
  */
 import React, { Component } from 'react';
-//import ReactAudioPlayer     from 'react-audio-player';
 import ReactAudioPlayer     from './../../../Components/MusicControls/ReactAudioPlayer';
 import PlayPause            from './../../../Components/MusicControls/PlayPause';
 import Prev                 from './../../../Components/MusicControls/Prev';
 import Next                 from './../../../Components/MusicControls/Next';
+import ToStart              from './../../../Components/MusicControls/ToStart';
 import Timer                from './../../../Components/MusicControls/Timer';
+import Speed                from './../../../Components/MusicControls/Speed';
 import TrackProgress        from './../../../Components/MusicControls/TrackProgress';
 import Volume               from './../../../Components/MusicControls/Volume';
-
 import { connect }          from 'react-redux';
 import { linkActions }      from '../../../helpers/redux';
 import {
     setLocalPlayPause,
-    setLocalVolume,
-    setLocalCurrentTime,
-    setLocalSrc,
-    setLocalDuration
+    updatePlaylistSettings
 } from '../actionCreators';
 
 
 @connect(
     ({ mainDjController }) => mainDjController,
-    linkActions( setLocalPlayPause, setLocalVolume, setLocalCurrentTime, setLocalSrc, setLocalDuration )
+    linkActions( setLocalPlayPause, updatePlaylistSettings )
 )
 export default class MusicController extends Component {
 
-    componentWillReceiveProps(nextProps, nextState) {
-
-    }
-
     componentWillMount(){
         const {
-            setLocalSrc,
+            updatePlaylistSettings,
             playlist,
             src,
             id
         } = this.props;
 
-        !src && setLocalSrc( playlist[0].preview, id, false )
-    }
-
-    componentDidUpdate(prevProps){
-        //if( prevState.volume !== this.state.volume ) {
-            //this.audio.audioEl.volume = this.state.volume;
-        //}
-        //const { volume, isPlaying } = this.props;
-
-        //if( prevProps.isPlaying !== isPlaying ) {
-            //isPlaying && this.audio.audioEl.play()
-            //isPlaying ? this.audio.audioEl.play() : this.audio.audioEl.pause();
-        //}
+        if( !src ) {
+            const settingsObj = {
+                src: playlist[0].preview,
+                currentTime: 0,
+                duration: 0,
+                isPlaying: false
+            };
+            updatePlaylistSettings(settingsObj, id)
+        }
     }
 
     canPlay = e => {
         const {
             id,
             isPlaying,
-            setLocalDuration
+            updatePlaylistSettings
         } = this.props;
 
-        setLocalDuration( e.target.duration, id );
+        updatePlaylistSettings( { duration: e.target.duration }, id );
 
         if( isPlaying && e.target.played ){
             e.target.play();
@@ -71,11 +60,11 @@ export default class MusicController extends Component {
 
     onTrackTimeUpdate = time => {
         const {
-            setLocalCurrentTime,
+            updatePlaylistSettings,
             id
         } = this.props;
 
-        setLocalCurrentTime( time, id);
+        updatePlaylistSettings( { currentTime: time}, id);
         this.audio.audioEl.currentTime = time;
     }
 
@@ -84,21 +73,60 @@ export default class MusicController extends Component {
             playlist,
             id,
             src,
-            setLocalSrc
+            updatePlaylistSettings
         } = this.props;
 
         const playlistLength = playlist.length;
 
         if( playlistLength > 1) {
             const currentIndex = playlist.map( item => item.preview ).indexOf( src );
-            //console.log(currentIndex, playlistLength);
             const nextSrc = currentIndex + 1 === playlistLength ? playlist[0].preview : playlist[currentIndex + 1].preview;
 
-            setLocalSrc( nextSrc, id, true )
+            const settingsObj = {
+                src: nextSrc,
+                isPlaying: true
+            };
+
+            updatePlaylistSettings( settingsObj, id )
         } else {
+            const settingsObj = {
+                currentTime: 0,
+                isPlaying: false
+            };
 
+            updatePlaylistSettings( settingsObj, id )
         }
+    }
 
+    onPrevNextPlay = attr => {
+        const {
+            playlist,
+            id,
+            src,
+            updatePlaylistSettings
+        } = this.props;
+
+        const playlistLength = playlist.length;
+
+        if( playlistLength > 1 ) {
+            const currentIndex = playlist.map( item => item.preview ).indexOf( src );
+            const nextSrc = currentIndex + 1 === playlistLength ? playlist[0].preview : playlist[currentIndex + 1].preview;
+            const prevSrc = currentIndex === 0 ? playlist[playlistLength - 1].preview : playlist[currentIndex -1].preview;
+            const currentSrc = attr === 'next' ? nextSrc : prevSrc;
+
+            const settingsObj = {
+                src: currentSrc,
+                isPlaying: true
+            };
+
+            updatePlaylistSettings( settingsObj, id )
+        }
+    }
+
+    onPlay = e => {
+        const { speed } = this.props;
+
+        if(e.target.playbackRate !== speed) e.target.playbackRate = speed
     }
 
     render(){
@@ -110,11 +138,9 @@ export default class MusicController extends Component {
             currentTime,
             commonVolume,
             setLocalPlayPause,
-            setLocalVolume,
-            setLocalCurrentTime,
-            setLocalDuration,
-            setLocalSrc,
+            updatePlaylistSettings,
             src,
+            speed,
             duration
         } = this.props;
 
@@ -127,17 +153,19 @@ export default class MusicController extends Component {
                         autoPlay={ false }
                         src={ src }
                         listenInterval={ 1000 }
-                        onListen={ time => setLocalCurrentTime( Math.round(time), id) }
-                        //onListen={ time => this.setCurrentTime( Math.round(time) ) }
+                        onListen={ time => updatePlaylistSettings( { currentTime: Math.round(time) }, id) }
                         ref={ element => { this.audio = element }}
                         onCanPlay={ this.canPlay }
                         volume={ volumeForPlayer }
                         isPlaying={ isPlaying }
                         onEnded={ this.onTrackEnded }
+                        speed={ speed }
+                        currentTime={ currentTime }
+                        onPlay={ this.onPlay }
                     />
 
                     <Prev
-                        clickHandler={ () => {} }
+                        clickHandler={ () => this.onPrevNextPlay('prev') }
                         fontSize={ 18 }
                     />
 
@@ -148,19 +176,28 @@ export default class MusicController extends Component {
                         isPlaying={ isPlaying } />
 
                     <Next
-                        clickHandler={ () => {} }
+                        clickHandler={ () => this.onPrevNextPlay('next') }
                         fontSize={ 18 }
                     />
 
+                    <ToStart
+                        clickHandler={ () => this.onTrackTimeUpdate(0) }
+                        fontSize={ 18 }
+                    />
 
                     <Volume
                         volume={ volume }
-                        onChange={ volume => setLocalVolume(volume, id) }
+                        onChange={ volume => updatePlaylistSettings( { volume }, id) }
                     />
 
                     <Timer
                         current={ currentTime }
                         duration={ duration }
+                    />
+
+                    <Speed
+                        speed={ speed }
+                        onChange={ speed => updatePlaylistSettings( { speed }, id) }
                     />
                 </div>
 
@@ -179,7 +216,7 @@ export default class MusicController extends Component {
                                 <li
                                     key={ name }
                                     className={ preview === src ? 'active' : '' }
-                                    onClick={ () => { preview !== src && setLocalSrc( preview, id, true ) } }
+                                    onClick={ () => { preview !== src && updatePlaylistSettings({ src: preview, isPlaying: true }, id )} }
                                 >
                                     { name }
                                 </li>

@@ -7,27 +7,30 @@ import PropTypes            from 'prop-types';
 class ReactAudioPlayer extends Component {
 
     componentDidUpdate(prevProps ){
-        const { volume, isPlaying, currentTime } = this.props;
+        const { volume, isPlaying, speed } = this.props;
         const audio = this.audioEl;
 
         if( prevProps.volume !== volume ) {
             audio.volume = volume;
         }
 
-        if( prevProps.isPlaying !== isPlaying) {
-            //console.log( 'isPlaying' , isPlaying );
-            isPlaying ? this.audioEl.play() : this.audioEl.pause();
+        if( prevProps.speed !== speed ) {
+            audio.playbackRate = speed;
         }
 
-        console.log('audio isPlaying didUpdate', isPlaying);
+        if( prevProps.isPlaying !== isPlaying) {
+            isPlaying ? this.audioEl.play() : this.audioEl.pause();
+        }
     }
 
     componentDidMount() {
-        const { volume, isPlaying, currentTime } = this.props;
+        const { volume, isPlaying, currentTime, speed } = this.props;
         const audio = this.audioEl;
 
         //settings
         audio.volume = volume;
+        audio.playbackRate = speed;
+        audio.currentTime = currentTime;
 
         // listeners
         audio.addEventListener('error', (e) => {
@@ -37,8 +40,6 @@ class ReactAudioPlayer extends Component {
         // When enough of the file has downloaded to start playing
         audio.addEventListener('canplay', (e) => {
             this.props.onCanPlay(e);
-
-            isPlaying && audio.play();
         });
 
         // When enough of the file has downloaded to play the entire file
@@ -56,6 +57,8 @@ class ReactAudioPlayer extends Component {
         audio.addEventListener('abort', (e) => {
             this.clearListenTrack();
             this.props.onAbort(e);
+
+
         });
 
         // When the file has finished playing to the end
