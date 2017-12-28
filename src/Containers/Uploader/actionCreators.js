@@ -26,20 +26,20 @@ export const setPlaylistIndicator = indicator => {
     }
 };
 
-export const removeSongFromPlaylistOne = songName => {
+export const removeSongFromPlaylistOne = preview => {
     return {
         type: REMOVE_SONG_FROM_PLAYLIST_ONE,
         payload: {
-            songName
+            preview
         }
     }
 };
 
-export const removeSongFromPlaylistTwo = songName => {
+export const removeSongFromPlaylistTwo = preview => {
     return {
         type: REMOVE_SONG_FROM_PLAYLIST_TWO,
         payload: {
-            songName
+            preview
         }
     }
 };

@@ -14,6 +14,15 @@ import {
     removeSongFromPlaylistTwo
 } from './actionCreators';
 
+import {
+    updatePlaylistSettings
+} from '../DjController/actionCreators'
+
+import {
+    PLAYLIST_ONE_SETTINGS,
+    PLAYLIST_TWO_SETTINGS
+} from '../DjController/constants';
+
 const drugAndDropStyle = {
     width: '300px',
     height: '300px',
@@ -27,8 +36,8 @@ const drugAndDropStyle = {
 
 
 @connect(
-    ({ uploader }) => uploader,
-    linkActions( setPlaylistIndicator, addToPlaylist, removeSongFromPlaylistOne, removeSongFromPlaylistTwo )
+    ({ uploader, mainDjController }) => ({ ...uploader, ...mainDjController}),
+    linkActions( setPlaylistIndicator, addToPlaylist, removeSongFromPlaylistOne, removeSongFromPlaylistTwo, updatePlaylistSettings )
 )
 export default class Uploader extends Component {
 
@@ -44,6 +53,38 @@ export default class Uploader extends Component {
         filteredSongs.length > 0 && addToPlaylist( [...currentPlaylist, ...filteredSongs], indicator);
     }
 
+    onRemoveFromPlaylist = (preview, attr) => {
+        const {
+            updatePlaylistSettings,
+            removeSongFromPlaylistOne,
+            removeSongFromPlaylistTwo,
+            playlistOneSettings,
+            playlistTwoSettings,
+        } = this.props;
+
+        const settingsObj = {
+            volume: 1,
+            speed: 1,
+            currentTime: 0,
+            duration: 0,
+            src: ''
+        };
+
+        if ( attr === 'one' ) {
+            removeSongFromPlaylistOne(preview);
+        }
+        if ( attr === 'two' ) {
+            removeSongFromPlaylistTwo(preview);
+        }
+        if( playlistOneSettings.src === preview ) {
+            updatePlaylistSettings( settingsObj, PLAYLIST_ONE_SETTINGS )
+        }
+
+        if( playlistTwoSettings.src === preview ) {
+            updatePlaylistSettings( settingsObj, PLAYLIST_TWO_SETTINGS )
+        }
+    }
+
     render(){
         const {
             indicatorsList,
@@ -51,8 +92,6 @@ export default class Uploader extends Component {
             setPlaylistIndicator,
             playlist_one,
             playlist_two,
-            removeSongFromPlaylistOne,
-            removeSongFromPlaylistTwo
         } = this.props;
 
         return (
@@ -73,12 +112,12 @@ export default class Uploader extends Component {
                 <div className="uploaded-playlists">
                     <MusicList
                         musicList={ playlist_one }
-                        onDelete={ removeSongFromPlaylistOne }
+                        onDelete={ preview => this.onRemoveFromPlaylist(preview, "one") }
                         playlistId="one"
                     />
                     <MusicList
                         musicList={ playlist_two }
-                        onDelete={ removeSongFromPlaylistTwo }
+                        onDelete={preview => this.onRemoveFromPlaylist(preview, "two") }
                         playlistId="two"
                     />
                 </div>

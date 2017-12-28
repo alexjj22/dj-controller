@@ -24,7 +24,7 @@ class ReactAudioPlayer extends Component {
     }
 
     componentDidMount() {
-        const { volume, isPlaying, currentTime, speed } = this.props;
+        const { volume, currentTime, speed } = this.props;
         const audio = this.audioEl;
 
         //settings

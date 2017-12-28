@@ -18,13 +18,13 @@ export default class MusicList extends PureComponent {
                 <h4>{ `playlist ${playlistId}` }</h4>
                 <ol className="music-list">
                     {
-                        musicList.map( ({name}) => {
+                        musicList.map( ({name, preview}) => {
                             return (
                                 <li key={ name }>
                                     { name }
                                     <i
                                         className="fa fa-trash"
-                                        onClick={ () => onDelete(name) }
+                                        onClick={ () => onDelete(preview) }
                                         aria-hidden="true"/>
                                 </li>
                             )

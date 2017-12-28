@@ -6,13 +6,14 @@ import MusicController      from './MusicController/index';
 import MainDjController     from './MainDjController/index'
 import { withRouter }       from 'react-router';
 import { connect }          from 'react-redux';
-import { linkActions }      from '../../helpers/redux';
-import {
-    setLocalPlayPause,
-} from './actionCreators';
 import {
     uploadPath
-} from '../../constants'
+} from '../../constants';
+
+import {
+    PLAYLIST_ONE_SETTINGS,
+    PLAYLIST_TWO_SETTINGS
+} from './constants';
 
 @withRouter
 @connect(
@@ -49,13 +50,13 @@ export default class DjController extends Component {
                     { playlist_one.length > 0 &&
                         <MusicController
                             playlist={ playlist_one }
-                            id="playlistOneSettings"
+                            id={ PLAYLIST_ONE_SETTINGS }
                             {...playlistOneSettings} />
                     }
                     { playlist_two.length > 0 &&
                         <MusicController
                             playlist={ playlist_two }
-                            id="playlistTwoSettings"
+                            id={ PLAYLIST_TWO_SETTINGS }
                             { ...playlistTwoSettings }/>
                     }
                 </div>
